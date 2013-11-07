@@ -1,0 +1,106 @@
+-- MySQL dump 10.13  Distrib 5.6.13, for osx10.9 (x86_64)
+--
+-- Host: localhost    Database: db_rafagram
+-- ------------------------------------------------------
+-- Server version	5.6.13
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Follow`
+--
+
+DROP TABLE IF EXISTS `Follow`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Follow` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_a` int(11) unsigned NOT NULL,
+  `id_b` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_a-id_b` (`id_a`,`id_b`),
+  KEY `id_b` (`id_b`),
+  CONSTRAINT `follow_ibfk_1` FOREIGN KEY (`id_a`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `follow_ibfk_2` FOREIGN KEY (`id_b`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='Relationship N:N Table of followers, id_a follows id_b.\nForeign key rules:\n1) User.id from both users must pre-exists in order to be able to insert records on this table;\n2) Erasing a User.id, automatically erases the relationship where this User.id is envolved;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Follow`
+--
+
+LOCK TABLES `Follow` WRITE;
+/*!40000 ALTER TABLE `Follow` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Follow` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Picture`
+--
+
+DROP TABLE IF EXISTS `Picture`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Picture` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `Path` varchar(255) DEFAULT NULL,
+  `User.id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user.id` (`User.id`),
+  CONSTRAINT `picture_ibfk_1` FOREIGN KEY (`User.id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='1:N Table of pictures.\nForeign key rules:\n1) Erasing a User.id, automatically erases all pictures from this User.id;';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Picture`
+--
+
+LOCK TABLES `Picture` WRITE;
+/*!40000 ALTER TABLE `Picture` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Picture` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `User`
+--
+
+DROP TABLE IF EXISTS `User`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `User` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `Name` varchar(11) DEFAULT NULL,
+  `Password` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='1:1 Table of users.';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `User`
+--
+
+LOCK TABLES `User` WRITE;
+/*!40000 ALTER TABLE `User` DISABLE KEYS */;
+INSERT INTO `User` (`id`, `Name`, `Password`) VALUES (11,NULL,NULL);
+/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2013-11-07 19:49:05
